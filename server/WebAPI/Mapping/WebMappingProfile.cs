@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using AutoMapper;
 using CS2DROP.Application.DTO;
 using CS2DROP.WebAPI.Models;
@@ -8,7 +9,8 @@ namespace CS2DROP.WebAPI.Mapping
     {
         public WebMappingProfile()
         {
-            CreateMap<CreateSkinDto, SkinModel>().ReverseMap();
+            CreateMap<SkinDto, SkinModel>().ReverseMap();
+            // CreateMap<IEnumerable<SkinDto>, IEnumerable<SkinModel>>(); 
         }
     }
 }

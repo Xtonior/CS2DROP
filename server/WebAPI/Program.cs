@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using CS2DROP.Application.Mapping;
 using System;
 using CS2DROP.WebAPI.Mapping;
+using CS2DROP.Infrastructure.Services;
 
 namespace CS2DROP.WebAPI;
 
@@ -62,6 +63,7 @@ public class Program
 
         var mapper = mapperConf.CreateMapper();
         builder.Services.AddSingleton(mapper);
+        builder.Services.AddScoped<SkinsService>();
 
         var app = builder.Build();
 

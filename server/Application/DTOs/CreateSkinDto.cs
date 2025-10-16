@@ -2,7 +2,7 @@ using CS2DROP.Domain.Enums;
 
 namespace CS2DROP.Application.DTO
 {
-    public class CreateSkinDto
+    public class SkinDto
     {
         public string Name { get; set; }
         public ItemRarity Rarity { get; set; }

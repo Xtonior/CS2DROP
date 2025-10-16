@@ -1,4 +1,5 @@
-@model IEnumerable<SkinModel>
+@model SkinPanelViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Manage Skins";
 }
@@ -7,7 +8,9 @@
 
 <form asp-action="AddSkin" method="post">
     <input name="Name" placeholder="Name" required />
-    <input name="Rarity" placeholder="Rarity" />
+    <select asp-for="NewSkin.Rarity" asp-items="ViewBag.RarityOptions">
+        <option value="">Select rarity</option>
+    </select>
     <input name="Price" placeholder="Price" type="number" step="0.01" />
     <input name="Collection" placeholder="Collection" />
     <button type="submit">Add Skin</button>
@@ -24,7 +27,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var s in Model)
+        @foreach (var s in Model.Skins)
         {
             <tr>
                 <td>@s.Name</td>
