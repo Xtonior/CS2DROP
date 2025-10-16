@@ -4,14 +4,11 @@ namespace CS2DROP.Infrastructure.Identity
 {
     public class AppRole : IdentityRole<int>
     {
-        public AppRole()
-        {
-        }
+        public AppRole() { }
 
         public AppRole(string roleName) : base(roleName)
         {
         }
-
-        public string Name { get; set; }
     }
+
 }

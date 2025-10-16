@@ -1,0 +1,35 @@
+@* @model IEnumerable<CaseModel>
+@{
+    ViewData["Title"] = "Manage Cases";
+}
+
+<h2>Manage Cases</h2>
+
+<form asp-action="AddCase" method="post">
+    <input name="Name" placeholder="Case Name" required />
+    <input name="Description" placeholder="Description" />
+    <button type="submit">Add Case</button>
+</form>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var c in Model)
+        {
+            <tr>
+                <td>@c.Name</td>
+                <td>@c.Description</td>
+                <td>
+                    <a asp-action="EditCase" asp-route-id="@c.Id">Edit</a> |
+                    <a asp-action="DeleteCase" asp-route-id="@c.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table> *@

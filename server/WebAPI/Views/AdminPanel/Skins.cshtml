@@ -1,0 +1,41 @@
+@model IEnumerable<SkinModel>
+@{
+    ViewData["Title"] = "Manage Skins";
+}
+
+<h2>Manage Skins</h2>
+
+<form asp-action="AddSkin" method="post">
+    <input name="Name" placeholder="Name" required />
+    <input name="Rarity" placeholder="Rarity" />
+    <input name="Price" placeholder="Price" type="number" step="0.01" />
+    <input name="Collection" placeholder="Collection" />
+    <button type="submit">Add Skin</button>
+</form>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Rarity</th>
+            <th>Price</th>
+            <th>Collection</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var s in Model)
+        {
+            <tr>
+                <td>@s.Name</td>
+                <td>@s.Rarity</td>
+                <td>@s.Price</td>
+                <td>@s.Collection</td>
+                <td>
+                    <a asp-action="EditSkin" asp-route-id="@s.Id">Edit</a> |
+                    <a asp-action="DeleteSkin" asp-route-id="@s.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

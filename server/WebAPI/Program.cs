@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using AutoMapper;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -9,12 +10,15 @@ using CS2DROP.Infrastructure;
 using CS2DROP.Infrastructure.Identity;
 using CS2DROP.Infrastructure.Data;
 using System.Threading.Tasks;
+using CS2DROP.Application.Mapping;
+using System;
+using CS2DROP.WebAPI.Mapping;
 
 namespace CS2DROP.WebAPI;
 
 public class Program
 {
-    public async Task Main(string[] args)
+    public static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
 
@@ -49,6 +53,16 @@ public class Program
         // Add services to the container.
         builder.Services.AddControllersWithViews();
 
+        var loggerFactory = builder.Services.BuildServiceProvider().GetRequiredService<ILoggerFactory>();
+        var mapperConf = new MapperConfiguration(conf =>
+        {
+            conf.AddProfile<AppMappingProfile>();
+            conf.AddProfile<WebMappingProfile>();
+        }, loggerFactory);
+
+        var mapper = mapperConf.CreateMapper();
+        builder.Services.AddSingleton(mapper);
+
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -68,6 +82,7 @@ public class Program
         await using (var scope = app.Services.CreateAsyncScope())
         {
             await IdentitySeeder.SeedAsync(scope.ServiceProvider);
+            await IdentitySeeder.SeedAdminRole(app.Services, app.Configuration);
         }
 
         app.MapStaticAssets();

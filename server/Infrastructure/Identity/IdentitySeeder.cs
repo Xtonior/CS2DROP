@@ -23,7 +23,12 @@ namespace CS2DROP.Infrastructure.Identity
             {
                 if (!await roleManager.RoleExistsAsync(role))
                 {
-                    await roleManager.CreateAsync(new AppRole(role));
+                    await roleManager.CreateAsync(new AppRole()
+                    {
+                        Name = role,
+                        NormalizedName = role.ToUpperInvariant(),
+                        ConcurrencyStamp = Guid.NewGuid().ToString()
+                    });
                 }
             }
         }
@@ -40,12 +45,12 @@ namespace CS2DROP.Infrastructure.Identity
 
             if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
             {
-                throw new Exception("invalid Admin credentials");
+                throw new Exception("Invalid Admin credentials");
             }
 
             if (!await roleManager.RoleExistsAsync("Admin"))
             {
-                await roleManager.CreateAsync(new AppRole("Admin"));
+                throw new Exception("Missing Admin role");
             }
 
             await userManager.CreateAsync(new AppUser() { UserName = name, Email = email }, password);
