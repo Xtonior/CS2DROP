@@ -51,12 +51,18 @@ namespace CS2DROP.WebAPI.Controllers
             return View(vm);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AddSkin(SkinModel skinModel)
+        public async Task<IActionResult> DeleteSkin(Guid id)
         {
-            var dto = mapper.Map<SkinDto>(skinModel);
+            await skinsService.DeleteSkinAsync(id);
+            return RedirectToAction("SkinPanel");
+        }
 
-            await skinsService.AddSkin(dto);
+        [HttpPost]
+        public async Task<IActionResult> AddSkin(SkinPanelViewModel viewModel)
+        {
+            var dto = mapper.Map<SkinDto>(viewModel.NewSkin);
+
+            await skinsService.AddSkinAsync(dto);
             return Redirect("SkinPanel");
         }
 
