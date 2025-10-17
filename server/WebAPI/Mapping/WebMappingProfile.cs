@@ -10,7 +10,6 @@ namespace CS2DROP.WebAPI.Mapping
         public WebMappingProfile()
         {
             CreateMap<SkinDto, SkinModel>().ReverseMap();
-            // CreateMap<IEnumerable<SkinDto>, IEnumerable<SkinModel>>(); 
         }
     }
 }

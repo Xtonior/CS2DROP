@@ -1,0 +1,14 @@
+@model AccountModel
+
+<form asp-action="Login" method="post">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <input asp-for="Email" placeholder="Email"/>
+    <span asp-validation-for="Email" class="text-danger"></span>
+
+    <input asp-for="Password" type="password" placeholder="Name"/>
+    <span asp-validation-for="Password" class="text-danger"></span>
+
+    <button type="submit">Login</button>
+</form>
