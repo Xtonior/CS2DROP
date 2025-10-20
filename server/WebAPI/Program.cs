@@ -78,6 +78,8 @@ public class Program
         app.UseHttpsRedirection();
         app.UseRouting();
 
+        app.UseStaticFiles();
+
         app.UseAuthentication();
         app.UseAuthorization();
 

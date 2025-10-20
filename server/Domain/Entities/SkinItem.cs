@@ -9,6 +9,6 @@ namespace CS2DROP.Domain.Entities
         public ItemRarity Rarity { get; set; }
         public decimal Price { get; set; }
         public string Collection { get; set; }
+        public string ImagePath { get; set; }
     }
-
 }
