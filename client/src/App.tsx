@@ -8,11 +8,13 @@ import '../styles/gloabls.css';
 
 export const App: React.FC = () => (
   <Router>
-    <Header />
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/case/:id" element={<CasePage />} />
-    </Routes>
-    <Footer />
+    <div className='app'>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/case/:id" element={<CasePage />} />
+      </Routes>
+      <Footer />
+    </div>
   </Router>
 );
