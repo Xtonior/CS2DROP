@@ -14,6 +14,7 @@ using CS2DROP.Application.Mapping;
 using System;
 using CS2DROP.WebAPI.Mapping;
 using CS2DROP.Infrastructure.Services;
+using Vite.AspNetCore;
 
 namespace CS2DROP.WebAPI;
 
@@ -65,6 +66,8 @@ public class Program
         builder.Services.AddSingleton(mapper);
         builder.Services.AddScoped<SkinsService>();
 
+        builder.Services.AddViteServices();
+
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -78,6 +81,7 @@ public class Program
         app.UseHttpsRedirection();
         app.UseRouting();
 
+        app.UseViteDevelopmentServer();
         app.UseStaticFiles();
 
         app.UseAuthentication();
@@ -94,6 +98,7 @@ public class Program
             name: "default",
             pattern: "{controller=Home}/{action=Index}/{id?}")
             .WithStaticAssets();
+        app.MapFallbackToFile("index.html");
 
         app.Run();
     }

@@ -14,7 +14,7 @@ export const CasePage: React.FC = () => {
   return (
     <div style={{ padding: '2rem' }}>
       <h1>Case #{id}</h1>
-      <div style={{ display: 'flex', gap: '1rem', margin: '2rem 0' }}>
+      <div style={{ display: 'flex', gap: '1rem', margin: '2rem' }}>
         {items.map((item, idx) => (
           <div key={idx} className="card" style={{ width: 150 }}>
             <img src={item.image} alt={item.title} style={{ width: '100%', borderRadius: 10 }} />

@@ -10,4 +10,21 @@ export default defineConfig({
       },
     }),
   ],
+  build: {
+    outDir: '../server/WebApi/wwwroot',
+    emptyOutDir: true,
+  },
+  server: {
+    port: 5173,
+    strictPort: true,
+    proxy: {
+      '/api':
+      {
+        target: 'http://localhost:5242',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/images': 'http://localhost:5242'
+    },
+  },
 })
