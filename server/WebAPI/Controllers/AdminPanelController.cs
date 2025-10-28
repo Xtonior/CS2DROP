@@ -22,41 +22,23 @@ namespace CS2DROP.WebAPI.Controllers
     public class AdminPanelController : Controller
     {
         private readonly SkinsService skinsService;
+        private readonly CasesService casesService;
+
         private readonly IMapper mapper;
         private readonly IWebHostEnvironment env;
 
-        public AdminPanelController(SkinsService skinsService, IMapper mapper, IWebHostEnvironment env)
+        public AdminPanelController(SkinsService skinsService, IMapper mapper, IWebHostEnvironment env, CasesService casesService)
         {
             this.skinsService = skinsService;
             this.mapper = mapper;
             this.env = env;
+            this.casesService = casesService;
         }
-
-        [HttpGet]
-        public async Task<IActionResult> Get() => Ok(await skinsService.GetAllSkinsAsync());
-
-        // public IActionResult Index() => View();
 
         public async Task<IActionResult> SkinPanel()
         {
             var items = await skinsService.GetAllSkinsAsync();
             var skins = mapper.Map<IEnumerable<SkinModel>>(items);
-
-            // var vm = new SkinPanelViewModel
-            // {
-            //     NewSkin = new SkinModel(),
-            //     Skins = skins
-            // };
-
-            // ViewBag.RarityOptions =
-            // Enum.GetValues(typeof(ItemRarity))
-            //     .Cast<ItemRarity>()
-            //     .Select(r =>
-            //     new SelectListItem
-            //     {
-            //         Value = r.ToString(),
-            //         Text = r.ToString()
-            //     });
 
             return Ok(skins);
         }
@@ -66,6 +48,9 @@ namespace CS2DROP.WebAPI.Controllers
             await skinsService.DeleteSkinAsync(id);
             return RedirectToAction("SkinPanel");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetSkins() => Ok(await skinsService.GetAllSkinsAsync());
 
         [HttpPost]
         public async Task<IActionResult> AddSkin(
@@ -111,6 +96,60 @@ namespace CS2DROP.WebAPI.Controllers
         public IActionResult GetSkinImagesDir()
         {
             return Ok("images/skins");
+        }
+
+        public async Task<IActionResult> DeleteCase(Guid id)
+        {
+            await casesService.DeleteCaseAsync(id);
+            return RedirectToAction("CasePanel");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetCases() => Ok(await casesService.GetAllSkinsAsync());
+
+        [HttpPost]
+        public async Task<IActionResult> AddCase(
+            [FromForm] string name,
+            [FromForm] string rarity,
+            [FromForm] string collection,
+            [FromForm] decimal price,
+            [FromForm] IFormFile file)
+        {
+            var dto = new CaseDto
+            {
+                Id = Guid.NewGuid(),
+                Name = name,
+                Collection = collection,
+                Price = price,
+            };
+
+            if (file != null && file.Length > 0)
+            {
+                var filename = Guid.NewGuid() + Path.GetExtension(file.FileName);
+                var dir = Path.Combine(env.WebRootPath, "images/cases");
+
+                if (!Directory.Exists(dir))
+                {
+                    Directory.CreateDirectory(dir);
+                }
+
+                using (var stream = new FileStream(Path.Combine(dir, filename), FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+
+                dto.ImagePath = "/images/cases/" + filename;
+            }
+
+            await casesService.AddCaseAsync(dto);
+
+            return Ok(dto);
+        }
+
+        [HttpGet]
+        public IActionResult GetCaseImagesDir()
+        {
+            return Ok("images/cases");
         }
 
         // public IActionResult CasePanel() => View(skinsService);

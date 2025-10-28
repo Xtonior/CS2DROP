@@ -9,7 +9,7 @@ namespace CS2DROP.Application.Mapping
         public AppMappingProfile()
         {
             CreateMap<SkinDto, SkinItem>().ReverseMap();
-            // CreateMap<IEnumerable<SkinDto>, IEnumerable<SkinItem>>().ReverseMap();
+            CreateMap<CaseDto, CaseItem>().ReverseMap();
         }
     }
 }

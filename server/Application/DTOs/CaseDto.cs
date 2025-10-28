@@ -1,8 +1,8 @@
 using CS2DROP.Domain.Enums;
 
-namespace CS2DROP.Domain.Entities
+namespace CS2DROP.Application.DTO
 {
-    public class CaseItem
+    public class CaseDto
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
