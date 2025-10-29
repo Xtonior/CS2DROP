@@ -1,17 +1,23 @@
-import React from 'react';
-import { CaseGrid } from '../components/CaseGrid';
+import React, { useEffect, useState } from 'react'
+import { CaseGrid } from '../components/CaseGrid'
+import type { CaseItem } from '../src/types'
 
-const sampleCases = [
-  { id: 1, title: 'Starter Case', price: 1, image: 'assets/cases/case_fracture.webp' },
-  { id: 2, title: 'Pro Case', price: 5, image: 'assets/cases/case_fracture.webp' },
-  { id: 3, title: 'Legendary Case', price: 20, image: 'assets/cases/case_fracture.webp' },
-];
+export const Home: React.FC = () => {
+  const [cases, setCases] = useState<CaseItem[]>([])
 
-export const Home: React.FC = () => (
-  <div style={{ padding: '2rem' }}>
-    <div className='grid-text'>
-      <h2>Available Cases</h2>
+  useEffect(() => {
+    fetch('/api/getcases')
+      .then(r => r.json())
+      .then(setCases)
+      .catch(console.error)
+  }, [])
+
+  return (
+    <div style={{ padding: '2rem' }}>
+      <div className='grid-text'>
+        <h2>Available Cases</h2>
+      </div>
+      <CaseGrid cases={cases} />
     </div>
-    <CaseGrid cases={sampleCases} />
-  </div>
-);
+  )
+}

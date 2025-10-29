@@ -65,6 +65,7 @@ public class Program
         var mapper = mapperConf.CreateMapper();
         builder.Services.AddSingleton(mapper);
         builder.Services.AddScoped<SkinsService>();
+        builder.Services.AddScoped<CasesService>();
 
         builder.Services.AddViteServices();
 

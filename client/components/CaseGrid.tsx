@@ -1,15 +1,9 @@
 import React from 'react';
 import { CaseCard } from './CaseCard';
-
-interface Case {
-  id: number;
-  title: string;
-  price: number;
-  image: string;
-}
+import type { CaseItem } from '../src/types';
 
 interface CaseGridProps {
-  cases: Case[];
+  cases: CaseItem[]
 }
 
 export const CaseGrid: React.FC<CaseGridProps> = ({ cases }) => (

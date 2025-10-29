@@ -35,7 +35,7 @@ namespace CS2DROP.WebAPI.Controllers
             this.casesService = casesService;
         }
 
-        public async Task<IActionResult> SkinPanel()
+        public async Task<IActionResult> GetSkins()
         {
             var items = await skinsService.GetAllSkinsAsync();
             var skins = mapper.Map<IEnumerable<SkinModel>>(items);
@@ -48,9 +48,6 @@ namespace CS2DROP.WebAPI.Controllers
             await skinsService.DeleteSkinAsync(id);
             return RedirectToAction("SkinPanel");
         }
-
-        [HttpGet]
-        public async Task<IActionResult> GetSkins() => Ok(await skinsService.GetAllSkinsAsync());
 
         [HttpPost]
         public async Task<IActionResult> AddSkin(
@@ -98,19 +95,36 @@ namespace CS2DROP.WebAPI.Controllers
             return Ok("images/skins");
         }
 
+        public async Task<IActionResult> GetCases()
+        {
+            var items = await casesService.GetAllSkinsAsync();
+            var cases = mapper.Map<IEnumerable<CaseModel>>(items);
+
+            return Ok(cases);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetCaseById(Guid id)
+        {
+            var item = await casesService.GetCaseAsync(id);
+
+            if (item != null)
+            {
+                return Ok(item);
+            }
+
+            return BadRequest();
+        }
+
         public async Task<IActionResult> DeleteCase(Guid id)
         {
             await casesService.DeleteCaseAsync(id);
             return RedirectToAction("CasePanel");
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetCases() => Ok(await casesService.GetAllSkinsAsync());
-
         [HttpPost]
         public async Task<IActionResult> AddCase(
             [FromForm] string name,
-            [FromForm] string rarity,
             [FromForm] string collection,
             [FromForm] decimal price,
             [FromForm] IFormFile file)

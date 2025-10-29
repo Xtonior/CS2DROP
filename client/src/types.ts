@@ -8,6 +8,14 @@ export enum ItemRarity {
     Contraband = "Contraband"
 }
 
+export interface CaseItem {
+    id: number
+    name: string
+    price: number
+    collection?: string 
+    imagePath: string
+}
+
 export interface SkinItem {
     id: number
     name: string

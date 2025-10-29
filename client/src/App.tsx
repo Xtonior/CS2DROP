@@ -6,6 +6,8 @@ import { CasePage } from '../pages/CasePage';
 import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
 import '../styles/globals.css';
+import { SkinsPanel } from '../pages/admin/SkinsPanel';
+import { CasesPanel } from '../pages/admin/CasesPanel';
 
 export const App: React.FC = () => (
   <Router>
@@ -15,6 +17,8 @@ export const App: React.FC = () => (
         <Route path="/" element={<Home />} />
         <Route path="/case/:id" element={<CasePage />} />
         <Route path="/admin" element={<AdminPanel />} />
+        <Route path="/admin/skinspanel" element={<SkinsPanel />} />
+        <Route path="/admin/casespanel" element={<CasesPanel />} />
       </Routes>
       <Footer />
     </div>

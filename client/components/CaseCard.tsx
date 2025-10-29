@@ -1,20 +1,19 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import type { CaseItem } from '../src/types';
+import { useNavigate } from 'react-router-dom';
 
-interface CaseCardProps {
-  id: number;
-  title: string;
-  price: number;
-  image: string;
+export const CaseCard: React.FC<CaseItem> = ({ id, name, price, imagePath }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/case/${id}`);
+  }
+
+  return (
+    <div className="case-card" onClick={handleClick} style={{ cursor: 'pointer' }}>
+      <img src={imagePath} alt={name} style={{ width: '100px', height: '100px', objectFit: "fill" }} />
+      <h3>{name}</h3>
+      <span>{price}$</span>
+    </div>
+  )
 }
-
-export const CaseCard: React.FC<CaseCardProps> = ({ id, title, price, image }) => (
-  <div className="card">
-    <img src={image} alt={title} style={{ borderRadius: '10px', width: '100%' }} />
-    <h3>{title}</h3>
-    <p>Min price: ${price.toFixed(2)}</p>
-    <Link to={`/case/${id}`}>
-      <button>Open Case</button>
-    </Link>
-  </div>
-);

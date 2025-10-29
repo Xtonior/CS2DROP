@@ -41,6 +41,16 @@ namespace CS2DROP.Infrastructure.Services
             await dbContext.SaveChangesAsync();
         }
 
+        public async Task<CaseDto?> GetCaseAsync(Guid guid)
+        {
+            var caseEntity = await dbContext.Cases.FirstOrDefaultAsync(x => x.Id == guid);
+
+            if (caseEntity == null)
+                return null;
+
+            return mapper.Map<CaseDto>(caseEntity);
+        }
+
         public async Task<IEnumerable<CaseDto>> GetAllSkinsAsync()
         {
             var items = await dbContext.Cases.ToListAsync();
