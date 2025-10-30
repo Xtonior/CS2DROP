@@ -22,9 +22,24 @@ namespace CS2DROP.Infrastructure.Services
 
         public async Task AddCaseAsync(CaseDto dto)
         {
-            var item = mapper.Map<CaseItem>(dto);
+            var caseEntity = new CaseItem
+            {
+                Id = dto.Id,
+                Name = dto.Name,
+                Collection = dto.Collection,
+                Price = dto.Price,
+                ImagePath = dto.ImagePath,
+                Skins = dto.SkinIds != null
+        ? dto.SkinIds.Select(id => new SkinItem { Id = id }).ToList()
+        : new List<SkinItem>()
+            };
 
-            dbContext.Cases.Add(item);
+            foreach (var skin in caseEntity.Skins)
+            {
+                dbContext.Attach(skin);
+            }
+
+            dbContext.Cases.Add(caseEntity);
             await dbContext.SaveChangesAsync();
         }
 

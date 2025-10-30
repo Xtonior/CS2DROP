@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using CS2DROP.Application.DTO;
 using CS2DROP.Domain.Entities;
 using CS2DROP.Domain.Enums;
 using Microsoft.AspNetCore.Http;
@@ -16,5 +18,6 @@ namespace CS2DROP.WebAPI.Models
 
         [Required(ErrorMessage = "Select an image")]
         public IFormFile? ImageFile { get; set; }
+        public List<SkinDto> Skins { get; set; }
     }
 }

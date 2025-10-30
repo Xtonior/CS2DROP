@@ -21,6 +21,12 @@ a {
   text-decoration: none;
 }
 
+select[multiple] {
+    width: 300px;
+    height: 150px;
+    display: block;
+}
+
 button {
   background-color: #1A1736;
   color: #fff;

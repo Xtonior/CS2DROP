@@ -46,5 +46,15 @@ namespace CS2DROP.Infrastructure.Services
             var items = await dbContext.Skins.ToListAsync();
             return mapper.Map<IEnumerable<SkinDto>>(items);
         }
+
+        public async Task<SkinDto?> GetSkinAsync(Guid guid)
+        {
+            var skinEntity = await dbContext.Skins.FirstOrDefaultAsync(x => x.Id == guid);
+
+            if (skinEntity == null)
+                return null;
+
+            return mapper.Map<SkinDto>(skinEntity);
+        }
     }
 }

@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { OpenCaseButton } from '../components/OpenCaseButton';
-import type { CaseItem } from '../src/types';
+import type { CaseItem, SkinItem } from '../src/types';
 
 export const CasePage: React.FC = () => {
   const { id } = useParams();
-  const [caseData, setCaseData] = useState<CaseItem | null>(null);
   const [loading, setLoading] = useState(true);
+  const [allSkins, setAllSkins] = useState<SkinItem[]>([]);
+  const [caseData, setCaseData] = useState<CaseItem>({
+    id: 0,
+    name: '',
+    price: 0,
+    imagePath: '',
+    skins: []
+  })
 
   useEffect(() => {
     if (!id) return;
@@ -24,6 +31,9 @@ export const CasePage: React.FC = () => {
         console.error(err);
         setLoading(false);
       });
+    fetch('/api/getskins')
+      .then(r => r.json())
+      .then(setAllSkins)
   }, [id]);
 
   if (loading) return <div>Loading...</div>;
@@ -33,12 +43,16 @@ export const CasePage: React.FC = () => {
     <div style={{ padding: '2rem' }}>
       <h1>{caseData.name}</h1>
       <div style={{ display: 'flex', gap: '1rem', margin: '2rem' }}>
-        {/* {caseData.items.map((item, idx) => (
-          <div key={idx} className="card" style={{ width: 150 }}>
-            <img src={item.image} alt={item.title} style={{ width: '100%', borderRadius: 10 }} />
-            <p>{item.title}</p>
-          </div>
-        ))} */}
+        {caseData.skins.map((iskin, idx) => {
+          const skin = allSkins.find(s => s.id === iskin.id)
+          if (!skin) return null
+          return (
+            <div key={idx} className="card" style={{ width: 150 }}>
+              <img src={skin.imagePath} alt={skin.name} style={{ width: '100%', borderRadius: 10 }} />
+              <p>{skin.name}</p>
+            </div>
+          )
+        })}
       </div>
       <OpenCaseButton caseId={caseData.id} />
     </div>

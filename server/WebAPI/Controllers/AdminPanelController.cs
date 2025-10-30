@@ -3,9 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
 using CS2DROP.Application.DTO;
+using CS2DROP.Domain.Entities;
 using CS2DROP.Domain.Enums;
 using CS2DROP.Infrastructure.Services;
 using CS2DROP.WebAPI.Models;
@@ -127,8 +129,10 @@ namespace CS2DROP.WebAPI.Controllers
             [FromForm] string name,
             [FromForm] string collection,
             [FromForm] decimal price,
-            [FromForm] IFormFile file)
+            [FromForm] IFormFile file,
+            [FromForm] string skins)
         {
+            var skinIds = JsonSerializer.Deserialize<List<Guid>>(skins);
             var dto = new CaseDto
             {
                 Id = Guid.NewGuid(),
@@ -136,6 +140,11 @@ namespace CS2DROP.WebAPI.Controllers
                 Collection = collection,
                 Price = price,
             };
+
+            if (skinIds != null)
+            {
+                dto.SkinIds = skinIds;
+            }
 
             if (file != null && file.Length > 0)
             {
