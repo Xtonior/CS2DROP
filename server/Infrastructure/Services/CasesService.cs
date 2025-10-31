@@ -62,6 +62,8 @@ namespace CS2DROP.Infrastructure.Services
                 return null;
             }
 
+            Console.WriteLine(caseEntity.Skins.Count);
+
             var caseDto = new CaseDto
             {
                 Id = caseEntity.Id,
@@ -75,9 +77,12 @@ namespace CS2DROP.Infrastructure.Services
             return caseDto;
         }
 
-        public async Task<IEnumerable<CaseDto>> GetAllSkinsAsync()
+        public async Task<IEnumerable<CaseDto>> GetAllCasesAsync()
         {
-            var items = await dbContext.Cases.ToListAsync();
+            var items = await dbContext.Cases
+                .Include(c => c.Skins)
+                .ToListAsync();
+
             return mapper.Map<IEnumerable<CaseDto>>(items);
         }
     }

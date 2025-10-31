@@ -12,7 +12,7 @@ export const CasePage: React.FC = () => {
     name: '',
     price: 0,
     imagePath: '',
-    skins: []
+    skinIds: []
   })
 
   useEffect(() => {
@@ -43,18 +43,18 @@ export const CasePage: React.FC = () => {
     <div style={{ padding: '2rem' }}>
       <h1>{caseData.name}</h1>
       <div style={{ display: 'flex', gap: '1rem', margin: '2rem' }}>
-        {caseData.skins.map((iskin, idx) => {
-          const skin = allSkins.find(s => s.id === iskin.id)
-          if (!skin) return null
+        {caseData.skinIds?.map((id, idx) => {
+          const skin = allSkins.find(s => s.id.toString() === id);
+          if (!skin) return null;
           return (
             <div key={idx} className="card" style={{ width: 150 }}>
               <img src={skin.imagePath} alt={skin.name} style={{ width: '100%', borderRadius: 10 }} />
               <p>{skin.name}</p>
             </div>
-          )
+          );
         })}
       </div>
-      <OpenCaseButton caseId={caseData.id} />
+      <OpenCaseButton caseId={caseData.id.toString()} allSkins={allSkins}/>
     </div>
   );
 };

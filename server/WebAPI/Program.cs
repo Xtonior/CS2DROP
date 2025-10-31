@@ -66,6 +66,7 @@ public class Program
         builder.Services.AddSingleton(mapper);
         builder.Services.AddScoped<SkinsService>();
         builder.Services.AddScoped<CasesService>();
+        builder.Services.AddScoped<CaseOpeningService>();
 
         builder.Services.AddViteServices();
 

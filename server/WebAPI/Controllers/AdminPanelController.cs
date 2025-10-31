@@ -99,7 +99,7 @@ namespace CS2DROP.WebAPI.Controllers
 
         public async Task<IActionResult> GetCases()
         {
-            var items = await casesService.GetAllSkinsAsync();
+            var items = await casesService.GetAllCasesAsync();
             var cases = mapper.Map<IEnumerable<CaseModel>>(items);
 
             return Ok(cases);

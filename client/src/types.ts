@@ -14,7 +14,7 @@ export interface CaseItem {
     price: number
     collection?: string 
     imagePath: string
-    skins: SkinItem[]
+    skinIds: string[]
 }
 
 export interface SkinItem {
