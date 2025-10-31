@@ -29,18 +29,15 @@ namespace CS2DROP.Infrastructure.Services
                 Collection = dto.Collection,
                 Price = dto.Price,
                 ImagePath = dto.ImagePath,
-                Skins = dto.SkinIds != null
-        ? dto.SkinIds.Select(id => new SkinItem { Id = id }).ToList()
-        : new List<SkinItem>()
             };
 
-            foreach (var skin in caseEntity.Skins)
-            {
-                dbContext.Attach(skin);
-            }
+            var skins = await dbContext.Skins.Where(s => dto.SkinIds.Contains(s.Id)).ToListAsync();
+
+            caseEntity.Skins = skins;
 
             dbContext.Cases.Add(caseEntity);
             await dbContext.SaveChangesAsync();
+
         }
 
         public async Task DeleteCaseAsync(Guid id)
@@ -58,12 +55,24 @@ namespace CS2DROP.Infrastructure.Services
 
         public async Task<CaseDto?> GetCaseAsync(Guid guid)
         {
-            var caseEntity = await dbContext.Cases.FirstOrDefaultAsync(x => x.Id == guid);
+            var caseEntity = await dbContext.Cases.Include(c => c.Skins).FirstOrDefaultAsync(c => c.Id == guid);
 
             if (caseEntity == null)
+            {
                 return null;
+            }
 
-            return mapper.Map<CaseDto>(caseEntity);
+            var caseDto = new CaseDto
+            {
+                Id = caseEntity.Id,
+                Name = caseEntity.Name,
+                Price = caseEntity.Price,
+                Collection = caseEntity.Collection,
+                ImagePath = caseEntity.ImagePath,
+                SkinIds = caseEntity.Skins.Select(s => s.Id).ToList()
+            };
+
+            return caseDto;
         }
 
         public async Task<IEnumerable<CaseDto>> GetAllSkinsAsync()

@@ -3,6 +3,7 @@ using System;
 using CS2DROP.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251031041056_CaseItemsSkinMany2ManyDidntWorkReverting")]
+    partial class CaseItemsSkinMany2ManyDidntWorkReverting
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.10");
@@ -49,6 +52,9 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid>("CaseItemId")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Collection")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -68,6 +74,8 @@ namespace Infrastructure.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CaseItemId");
 
                     b.ToTable("Skins");
                 });
@@ -162,21 +170,6 @@ namespace Infrastructure.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("CaseItemSkinItem", b =>
-                {
-                    b.Property<Guid>("CasesId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("SkinsId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("CasesId", "SkinsId");
-
-                    b.HasIndex("SkinsId");
-
-                    b.ToTable("CaseItemSkinItem");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -278,19 +271,15 @@ namespace Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("CaseItemSkinItem", b =>
+            modelBuilder.Entity("CS2DROP.Domain.Entities.SkinItem", b =>
                 {
-                    b.HasOne("CS2DROP.Domain.Entities.CaseItem", null)
-                        .WithMany()
-                        .HasForeignKey("CasesId")
+                    b.HasOne("CS2DROP.Domain.Entities.CaseItem", "CaseItem")
+                        .WithMany("Skins")
+                        .HasForeignKey("CaseItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CS2DROP.Domain.Entities.SkinItem", null)
-                        .WithMany()
-                        .HasForeignKey("SkinsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("CaseItem");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -342,6 +331,11 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("CS2DROP.Domain.Entities.CaseItem", b =>
+                {
+                    b.Navigation("Skins");
                 });
 #pragma warning restore 612, 618
         }

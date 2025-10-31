@@ -10,5 +10,7 @@ namespace CS2DROP.Domain.Entities
         public decimal Price { get; set; }
         public string Collection { get; set; }
         public string ImagePath { get; set; }
+
+        public List<CaseItem> Cases { get; set; } = new();
     }
 }
